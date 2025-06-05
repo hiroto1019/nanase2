@@ -1591,11 +1591,11 @@ export default function TodoItem({ todo, onDelete, onToggleComplete, onUpdateTas
   );
 }
 </code></pre>
-<p><em>(TodoItem.tsxの修正点: <code>editedTask</code>の初期化、<code>handleUpdate</code>内でSupabase直接呼び出しを親コンポーネント経由の<code>onUpdateTask</code>に変更、Escapeキーでの編集キャンセル処理追加)</em></p>
+        <p><em>(TodoItem.tsxの修正点: <code>editedTask</code>の初期化、<code>handleUpdate</code>内でSupabase直接呼び出しを親コンポーネント経由の<code>onUpdateTask</code>に変更、Escapeキーでの編集キャンセル処理追加)</em></p>
 
-<p><strong>B. <code>AddTodoForm.tsx</code> (Todo追加フォーム)</strong>:</p>
-<p><code>src/components/AddTodoForm.tsx</code> を作成します。</p>
-<pre><code class="language-typescript">// src/components/AddTodoForm.tsx
+        <p><strong>B. <code>AddTodoForm.tsx</code> (Todo追加フォーム)</strong>:</p>
+        <p><code>src/components/AddTodoForm.tsx</code> を作成します。</p>
+        <pre><code class="language-typescript">// src/components/AddTodoForm.tsx
 'use client';
 
 import { useState } from 'react';
@@ -1628,11 +1628,11 @@ export default function AddTodoForm({ onAdd }: AddTodoFormProps) {
   );
 }
 </code></pre>
-<p><em>(AddTodoForm.tsxの修正点: <code>taskText</code>の初期化、<code>onAdd</code>に渡す際に<code>trim()</code>)</em></p>
+        <p><em>(AddTodoForm.tsxの修正点: <code>taskText</code>の初期化、<code>onAdd</code>に渡す際に<code>trim()</code>)</em></p>
 
-<p><strong>C. <code>TodoList.tsx</code> (Todoリスト全体)</strong>:</p>
-<p><code>src/components/TodoList.tsx</code> を作成します。これは、Todo項目をリスト表示し、追加フォームを含みます。</p>
-<pre><code class="language-typescript">// src/components/TodoList.tsx
+        <p><strong>C. <code>TodoList.tsx</code> (Todoリスト全体)</strong>:</p>
+        <p><code>src/components/TodoList.tsx</code> を作成します。これは、Todo項目をリスト表示し、追加フォームを含みます。</p>
+        <pre><code class="language-typescript">// src/components/TodoList.tsx
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
@@ -1785,11 +1785,11 @@ export default function TodoList({ user }: TodoListProps) {
 }
 
 </code></pre>
-<p><em>(TodoList.tsxの修正点: <code>todos</code>の型と初期値、<code>fetchTodos</code>の依存配列、<code>handleAddTodo</code>で<code>user_id</code>指定と<code>.single()</code>、リアルタイム更新時のコメントアウトされた手動更新処理例の提示、<code>handleUpdateTaskText</code>の追加と<code>TodoItem</code>へのprop渡し)</em></p>
+        <p><em>(TodoList.tsxの修正点: <code>todos</code>の型と初期値、<code>fetchTodos</code>の依存配列、<code>handleAddTodo</code>で<code>user_id</code>指定と<code>.single()</code>、リアルタイム更新時のコメントアウトされた手動更新処理例の提示、<code>handleUpdateTaskText</code>の追加と<code>TodoItem</code>へのprop渡し)</em></p>
 
-<p><strong>D. <code>TodoApp.tsx</code> (認証済みユーザーのためのメインコンテナ)</strong>:</p>
-<p><code>src/components/TodoApp.tsx</code> を作成します。これは <code>TodoList</code> をラップし、ユーザー情報を渡します。</p>
-<pre><code class="language-typescript">// src/components/TodoApp.tsx
+        <p><strong>D. <code>TodoApp.tsx</code> (認証済みユーザーのためのメインコンテナ)</strong>:</p>
+        <p><code>src/components/TodoApp.tsx</code> を作成します。これは <code>TodoList</code> をラップし、ユーザー情報を渡します。</p>
+        <pre><code class="language-typescript">// src/components/TodoApp.tsx
 'use client';
 
 import type { User } from '@supabase/supabase-js';
@@ -1808,9 +1808,9 @@ export default function TodoApp({ user }: TodoAppProps) {
   );
 }
 </code></pre>
-<p>最後に、<code>src/app/page.tsx</code> で <code>TodoApp</code> コンポーネントをインポートして、ユーザーがログインしている場合に表示するようにします（これは既にステップ4-Bで行われていますが、コメントアウトされている箇所を有効化します）。</p>
-<p><code>src/app/page.tsx</code> の該当箇所を修正:</p>
-<pre><code class="language-typescript">// src/app/page.tsx (抜粋)
+        <p>最後に、<code>src/app/page.tsx</code> で <code>TodoApp</code> コンポーネントをインポートして、ユーザーがログインしている場合に表示するようにします（これは既にステップ4-Bで行われていますが、コメントアウトされている箇所を有効化します）。</p>
+        <p><code>src/app/page.tsx</code> の該当箇所を修正:</p>
+        <pre><code class="language-typescript">// src/app/page.tsx (抜粋)
 // ...
 import TodoApp from '@/components/TodoApp'; // インポートを有効化
 // ...
@@ -1839,3 +1839,171 @@ export default async function HomePage() {
   );
 }
 </code></pre>
+        <h4 id="todo-step6">5.2.8. ステップ6：CRUD操作の実装 - Todoの追加、表示、更新、削除</h4>
+        <p><code>TodoList.tsx</code> コンポーネントに戻り、Supabaseと通信して実際にTodoアイテムを追加、表示、更新、削除する関数を実装します。これには <code>supabase-js</code> クライアントを使用します。</p>
+        <p>リアルタイム更新も実装して、データベースの変更が即座にUIに反映されるようにします。これはSupabaseの強力な機能の一つです<sup>25</sup>。</p>
+        <p><em>（ステップ5-Cの <code>TodoList.tsx</code> のコードで、<code>fetchTodos</code>, <code>handleAddTodo</code>, <code>handleDeleteTodo</code>, <code>handleToggleComplete</code>, <code>handleUpdateTaskText</code> 及びリアルタイムリスナーの実装は既に行われていますので、ここでは主要なポイントを再確認します。）</em></p>
+        <ul>
+            <li><strong>Todoの取得 (Fetch/Read)</strong>: <code>useEffect</code>フック内で、コンポーネントのマウント時にユーザーのTodoを<code>todos</code>テーブルから取得します。<code>select('*')</code>ですべての列を取得し、<code>eq('user_id', user.id)</code>で現在のユーザーのタスクのみをフィルタリングし、<code>order('created_at', { ascending: false })</code>で新しいものが上にくるように並べ替えます。</li>
+            <li><strong>Todoの追加 (Create)</strong>: <code>handleAddTodo</code>関数で、新しいタスクテキストと現在の<code>user.id</code>を<code>todos</code>テーブルに<code>insert</code>します。</li>
+            <li><strong>Todoの更新 (Update)</strong>:
+                <ul>
+                    <li><code>handleToggleComplete</code>関数で、タスクの<code>is_completed</code>状態を更新します。</li>
+                    <li><code>handleUpdateTaskText</code>関数で、タスクの<code>task_text</code>を更新します。</li>
+                </ul>
+                これらの関数は、特定の<code>id</code>と<code>user_id</code>に一致するタスクを<code>update</code>します。
+            </li>
+            <li><strong>Todoの削除 (Delete)</strong>: <code>handleDeleteTodo</code>関数で、特定の<code>id</code>と<code>user_id</code>に一致するタスクを<code>delete</code>します。</li>
+            <li><strong>リアルタイム更新</strong>: <code>useEffect</code>内でSupabaseのリアルタイムサブスクリプションを設定します (<code>supabase.channel(...).on(...).subscribe()</code>)。<code>todos</code>テーブルで現在のユーザーに関連する変更（INSERT, UPDATE, DELETE）があった場合に、<code>fetchTodos</code>を再度呼び出してUIを最新の状態に保ちます。</li>
+        </ul>
+        <p>この段階で、サインアップ/ログイン後、Todoの追加、チェックによる完了/未完了の切り替え、タスクテキストのダブルクリックによる編集、そして削除ができるはずです。</p>
+
+        <h4 id="todo-step7">5.2.9. ステップ7：スタイリング - アプリをかっこよくしよう！</h4>
+        <p>現状のアプリは機能しますが、見た目は非常にシンプルです。<code>src/app/globals.css</code>や、各コンポーネントの<code>style</code>属性を調整して、もう少し見栄えを良くしましょう。ここでは基本的なインラインスタイルと<code>globals.css</code>の簡単な例を示しましたが、より本格的なスタイリングにはTailwind CSSやCSS Modulesなどの技術を検討すると良いでしょう。</p>
+        <p><strong>例：<code>globals.css</code> の改善案</strong></p>
+        <pre><code class="language-css">/* src/app/globals.css */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  line-height: 1.6;
+  background-color: #f4f7f6; /* 少し色味のある背景 */
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  background-color: #0070f3; /* Next.jsのような青 */
+  color: white;
+  padding: 1.2rem 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+main {
+  flex-grow: 1;
+  max-width: 700px; /* メインコンテンツの最大幅 */
+  width: 90%;
+  margin: 2rem auto; /* 中央寄せ */
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 0.6em 1.2em;
+  border: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button[type="submit"] {
+  background-color: #0070f3;
+  color: white;
+}
+button[type="submit"]:hover {
+  background-color: #005bb5;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 0.7em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 0.8rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* TodoItemやAuthForm内のスタイルも調整すると良いでしょう */
+/* 例: src/components/AuthForm.tsx 内のボタンのスタイル */
+/* 既存のインラインスタイルをglobals.cssに移動してクラスを適用するなど */
+        </code></pre>
+        <p><code>src/app/layout.tsx</code> の <code>style</code> 属性を削除し、<code>globals.css</code> でヘッダーやフッターのスタイルが適用されるようにします。</p>
+        <p>UIデザイナーとしてのあなたのスキルを活かして、自由にアプリを美しくしてください！フォント、色、余白、インタラクションなどを工夫することで、使い心地が格段に向上します。</p>
+
+        <h4 id="todo-step8">5.2.10. ステップ8：Vercelでデプロイ - 世界に公開！</h4>
+        <p>アプリがローカルで動作し、見た目も満足のいくものになったら、世界に公開しましょう！VercelはNext.jsの作者が提供しているプラットフォームで、Next.jsアプリのデプロイが非常に簡単です。</p>
+        <ol>
+            <li><strong>Gitリポジトリの準備</strong>:
+                <ul>
+                    <li>まだプロジェクトをGitで管理していない場合は、プロジェクトのルートディレクトリで初期化します：
+                        <pre><code>git init
+git add .
+git commit -m "Initial commit of Todo App"
+                        </code></pre>
+                    </li>
+                    <li>GitHubやGitLabなどのプラットフォームに新しいリポジトリを作成し、ローカルリポジトリをプッシュします。
+                        <pre><code>git remote add origin YOUR_GIT_REPOSITORY_URL
+git branch -M main
+git push -u origin main
+                        </code></pre>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>Vercelアカウントの作成と接続</strong>:
+                <ul>
+                    <li><code>vercel.com</code> にアクセスし、GitHub/GitLab/Bitbucketアカウントでサインアップまたはログインします。</li>
+                </ul>
+            </li>
+            <li><strong>プロジェクトのインポートとデプロイ</strong>:
+                <ul>
+                    <li>Vercelダッシュボードで、「Add New...」 -> 「Project」を選択します。</li>
+                    <li>Gitプロバイダ（例：GitHub）から先ほどプッシュしたリポジトリを選択します。</li>
+                    <li>VercelがNext.jsプロジェクトを自動的に検出し、ビルド設定を提案します。通常はデフォルト設定で問題ありません。</li>
+                    <li><strong>環境変数の設定</strong>: デプロイ設定の中に「Environment Variables」セクションがあります。ここに、<code>.env.local</code> に設定したSupabaseのURLとanonキーを追加する必要があります。
+                        <ul>
+                            <li><code>NEXT_PUBLIC_SUPABASE_URL</code> とその値</li>
+                            <li><code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> とその値</li>
+                        </ul>
+                        これらの変数をVercelに設定しないと、デプロイされたアプリはSupabaseに接続できません。
+                    </li>
+                    <li>「Deploy」をクリックします。</li>
+                </ul>
+            </li>
+        </ol>
+        <p>Vercelがアプリをビルドし、デプロイするまで数分待ちます。完了すると、公開URLが提供され、誰でもアクセスできるようになります！</p>
+        <p>Gitリポジトリに変更をプッシュするたびに、Vercelは自動的にアプリを再ビルドしてデプロイすることもできます（CI/CD）。</p>
+        <p>おめでとうございます！これで、Next.js、Supabase、TypeScriptを使用してフルスタックのTodoアプリケーションを構築し、Vercelでデプロイする方法を学びました。</p>
+
+        <hr>
+
+        <h2 id="conclusion">おわりに：あなたの冒険は続く！</h2>
+        <p>よくここまでたどり着きました！あなたはたくさんのことを学びました：ウェブの基本的な構造（HTML、CSS）、それを動かす力（JavaScript、TypeScript）、現代的なUIの構築方法（React、Next.js）、そして強力なバックエンドのセットアップ（Supabase）、さらにはプロジェクトの管理と共有（Git、GitHub）、そして最終的には世界への公開（Vercel）まで！</p>
+        <p>これは長い旅の始まりに過ぎません。いくつかの重要なポイントを覚えておいてください：</p>
+        <ul>
+            <li><strong>練習が鍵</strong>: 学んだことを使って、小さなプロジェクトを自分で作ってみましょう。アイデアは無限です（メモアプリ、レシピブック、シンプルなゲームなど）。</li>
+            <li><strong>ドキュメントを読む</strong>: 各技術（React、Next.js、Supabaseなど）には公式ドキュメントがあります。これらは最高の情報源です。</li>
+            <li><strong>コミュニティに参加する</strong>: オンラインフォーラム（Stack Overflow、Redditの関連サブレディット、Discordサーバーなど）には、助けを求めたり、他の開発者から学んだりできる場所がたくさんあります。</li>
+            <li><strong>間違いを恐れない</strong>: コーディングは問題解決の連続です。エラーメッセージはあなたの友達です。それらから学びましょう。</li>
+            <li><strong>好奇心を持ち続ける</strong>: テクノロジーは常に進化しています。新しいことを学ぶ意欲を持ち続けましょう。</li>
+        </ul>
+        <p>UIデザイナーとしてのあなたの経験は、フロントエンド開発において非常に価値があります。ユーザーが何を必要とし、どのようにアプリを使うべきかを直感的に理解できるからです。この新しい技術的なスキルセットと組み合わせることで、あなたは本当に素晴らしいデジタル体験を創造できるようになるでしょう。</p>
+        <p>あなたのコーディングの冒険が実り多く、楽しいものになることを心から願っています！</p>
+
+    </div>
+</body>
+</html>
